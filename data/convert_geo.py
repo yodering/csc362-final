@@ -2,7 +2,7 @@ import googlemaps
 import pandas as pd
 
 # Initialize the client with your API key
-gmaps = googlemaps.Client(key='AIzaSyCSPYz-5mfjohK5gTTOl2SaK3Y4btJ0D2A')
+gmaps = googlemaps.Client(key='')
 
 # Define function to fetch coordinates
 def get_coordinates(location):
