@@ -44,10 +44,10 @@ const tooltip = d3.select("body").append("div")
 
 // Load and process data
 d3.json("geojson/europe.geojson").then(function(europe) {
-    d3.csv("/data/updated_data.csv").then(function(data) {
+    d3.csv("/data/updated_1.csv").then(function(data) {
         data.forEach(d => {
-            const parsedDate = new Date(d.date);
-            d.year = parsedDate.getFullYear(); // Extract the year from the date
+            const dateYear = d.date.split(",").pop().trim(); // Extract the year from the date string
+            d.year = parseInt(dateYear); // Convert the year to an integer
             if (d.longitude && d.latitude) {
                 d.jitteredLongitude = +d.longitude + (Math.random() - 0.5) * 0.05; // Jitter positions
                 d.jitteredLatitude = +d.latitude + (Math.random() - 0.5) * 0.05;
@@ -60,7 +60,7 @@ d3.json("geojson/europe.geojson").then(function(europe) {
         const years = Array.from(new Set(validData.map(d => d.year))).sort();
         const colorScale = d3.scaleOrdinal()
             .domain(years)
-            .range(d3.schemeTableau10); // Use a color scheme for the range
+            .range(d3.schemeTableau10);
 
         // Plot the map and data points
         svg.selectAll("path")
@@ -80,14 +80,14 @@ d3.json("geojson/europe.geojson").then(function(europe) {
             .attr("cx", d => projection([d.jitteredLongitude, d.jitteredLatitude])[0])
             .attr("cy", d => projection([d.jitteredLongitude, d.jitteredLatitude])[1])
             .attr("r", 5)
-            .attr("fill", d => colorScale(d.year)) // Use color scale based on year
+            .attr("fill", d => colorScale(d.year)) // Use color scale based on the year
             .attr("stroke", "#fff")
             .attr("stroke-width", 1.5)
             .on("mouseover", function(event, d) {
                 tooltip.transition()
                     .duration(200)
                     .style("opacity", .9);
-                tooltip.html(`Name: ${d.name}<br/>Location: ${d.city ? d.city + ', ' : ''}${d.country}<br/>Venue: ${d.venue}<br/>Date: ${d.date}`)
+                tooltip.html(`Name: ${d.name}<br/>Location: ${d.city ? d.city + ', ' : ''}${d.country}<br/>Venue: ${d.venue}<br/>Date: ${d.date}`) // Display the full range of days in the tooltip
                     .style("left", (event.pageX + 5) + "px")
                     .style("top", (event.pageY - 28) + "px");
             })
@@ -111,3 +111,4 @@ d3.json("geojson/europe.geojson").then(function(europe) {
             .text(`Missing Competitions: ${missingDataCount}`);
     });
 });
+
