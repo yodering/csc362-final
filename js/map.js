@@ -44,7 +44,7 @@ const tooltip = d3.select("body").append("div")
 
 // Load and process data
 d3.json("geojson/europe.geojson").then(function(europe) {
-    d3.csv("/data/updated_1.csv").then(function(data) {
+    d3.csv("/data/updated_data5.csv").then(function(data) {
         data.forEach(d => {
             const dateYear = d.date.split(",").pop().trim(); // Extract the year from the date string
             d.year = parseInt(dateYear); // Convert the year to an integer
