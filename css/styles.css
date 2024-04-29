@@ -3,3 +3,16 @@
     height: 600px;
     border: 1px solid black;
 }
+
+#color-key-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 200px;
+    height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+}
