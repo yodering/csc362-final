@@ -180,7 +180,7 @@ d3.json("geojson/europe.geojson").then(function (europe) {
         // Add color key
         const colorKey = svg.append("g")
             .attr("class", "color-key")
-            .attr("transform", `translate(${width - 200}, 20)`); // Position the key at the top-right corner
+            .attr("transform", `translate(${width - 200}, 20)`);
 
         colorKey.append("text")
             .attr("x", 0)
@@ -193,14 +193,27 @@ d3.json("geojson/europe.geojson").then(function (europe) {
             .enter()
             .append("g")
             .attr("class", "key-item")
-            .attr("transform", (d, i) => `translate(0, ${(i + 1) * 25})`); // Adjust the spacing between key items
+            .attr("transform", (d, i) => `translate(0, ${(i + 1) * 25})`)
+            .on("click", function (event, d) {
+                yearSelect.property("value", d);
+                filterData();
+            })
+            .style("cursor", "pointer");
 
         keyItems.append("rect")
             .attr("x", 0)
             .attr("y", 0)
             .attr("width", 20)
             .attr("height", 20)
-            .attr("fill", d => colorScale(d));
+            .attr("fill", d => colorScale(d))
+            .attr("stroke", "#000")
+            .attr("stroke-width", 1)
+            .on("mouseover", function () {
+                d3.select(this).attr("stroke-width", 2);
+            })
+            .on("mouseout", function () {
+                d3.select(this).attr("stroke-width", 1);
+            });
 
         keyItems.append("text")
             .attr("x", 30)
