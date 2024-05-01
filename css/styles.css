@@ -1,18 +1,34 @@
+html,
+body {
+    overflow: hidden !important;
+}
+
 #map {
     width: 100%;
     height: 600px;
     border: 1px solid black;
+    overflow: hidden !important;
 }
 
-#color-key-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 200px;
-    height: 200px;
-    overflow-y: auto;
+#controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
     padding: 10px;
+    z-index: 999;
+}
+
+#zoom-controls {
+    margin-bottom: 10px;
+}
+
+#filter-controls {
+    margin-bottom: 10px;
+}
+
+#reset-button {
+    display: block;
+    margin: 0 auto;
 }

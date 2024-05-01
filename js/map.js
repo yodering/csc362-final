@@ -92,7 +92,7 @@ d3.json("geojson/europe.geojson").then(function (europe) {
         }
 
         // Create a select dropdown for year filtering
-        const yearSelect = d3.select("body").append("select")
+        const yearSelect = d3.select("#filter-controls").append("select")
             .on("change", filterData);
 
         yearSelect.append("option")
@@ -106,7 +106,7 @@ d3.json("geojson/europe.geojson").then(function (europe) {
         });
 
         // Create a select dropdown for country filtering
-        const countrySelect = d3.select("body").append("select")
+        const countrySelect = d3.select("#filter-controls").append("select")
             .on("change", filterData);
 
         countrySelect.append("option")
@@ -155,6 +155,14 @@ d3.json("geojson/europe.geojson").then(function (europe) {
                 .text(`Displayed Competitions: ${filteredData.length}`);
         }
 
+        // Display count of competitions
+        svg.append("text")
+            .attr("class", "displayed-count")
+            .attr("x", 50)
+            .attr("y", 20)
+            .style("font-size", "16px")
+            .text(`Displayed Competitions: ${validData.length}`);
+
         // Plot the map
         svg.selectAll("path")
             .data(europe.features)
@@ -168,14 +176,6 @@ d3.json("geojson/europe.geojson").then(function (europe) {
         // Initial map update
         updateMap();
         updateDisplayedCount();
-
-        // Display count of competitions
-        svg.append("text")
-            .attr("class", "displayed-count")
-            .attr("x", 50)
-            .attr("y", height - 20)
-            .style("font-size", "16px")
-            .text(`Displayed Competitions: ${validData.length}`);
 
         // Add color key
         const colorKey = svg.append("g")
@@ -227,5 +227,35 @@ d3.json("geojson/europe.geojson").then(function (europe) {
         if (keyHeight > height - 40) {
             svg.attr("height", keyHeight + 40); // Add some padding for the key
         }
+
+        // Create a reset button
+        const resetButton = d3.select("#controls")
+            .append("button")
+            .text("Reset")
+            .on("click", resetMap);
+
+        function resetMap() {
+            // Reset the select dropdowns
+            yearSelect.property("value", "");
+            countrySelect.property("value", "");
+
+            // Reset filteredData to all valid data
+            filteredData = validData;
+
+            // Update the map
+            updateMap();
+            updateDisplayedCount();
+        }
+
+        // Create a reset zoom button
+        const resetZoomButton = d3.select("#zoom-controls")
+            .append("button")
+            .text("Reset Zoom")
+            .on("click", resetZoom);
+
+        function resetZoom() {
+            svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+        }
+
     });
 });
