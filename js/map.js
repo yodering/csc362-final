@@ -73,47 +73,39 @@ d3.json("geojson/europe.geojson").then(function (europe) {
         const colorScale = distinctColorScale();
 
         let filteredData = validData; // Initialize filteredData with all valid data
+        let selectedYears = []; // Initialize selectedYears array
 
         function filterData() {
-            const selectedYear = yearSelect.property("value");
-            const selectedCountry = countrySelect.property("value");
+            const selectedCountries = Array.from(countrySelect.property("selectedOptions"), option => option.value);
 
-            if (selectedYear === "" && selectedCountry === "") {
+            if (selectedYears.length === 0 && (selectedCountries.length === 0 || selectedCountries.includes(""))) {
                 filteredData = validData;
-            } else if (selectedYear === "") {
-                filteredData = validData.filter(d => d.country === selectedCountry);
-            } else if (selectedCountry === "") {
-                filteredData = validData.filter(d => d.year === +selectedYear);
+            } else if (selectedYears.length === 0) {
+                filteredData = validData.filter(d => selectedCountries.includes(d.country.split(",")[0].trim()));
+            } else if (selectedCountries.length === 0 || selectedCountries.includes("")) {
+                filteredData = validData.filter(d => selectedYears.includes(d.year));
             } else {
-                filteredData = validData.filter(d => d.year === +selectedYear && d.country === selectedCountry);
+                filteredData = validData.filter(d => selectedYears.includes(d.year) && selectedCountries.includes(d.country.split(",")[0].trim()));
             }
             updateMap();
             updateDisplayedCount();
         }
 
-        // Create a select dropdown for year filtering
-        const yearSelect = d3.select("#filter-controls").append("select")
-            .on("change", filterData);
-
-        yearSelect.append("option")
-            .attr("value", "")
-            .text("All Years");
-
-        years.forEach(year => {
-            yearSelect.append("option")
-                .attr("value", year)
-                .text(year);
-        });
-
-        // Create a select dropdown for country filtering
+        // Create a multi-select dropdown for country filtering
         const countrySelect = d3.select("#filter-controls").append("select")
+            .attr("multiple", true)
+            .style("width", "200px") // Increase the width of the select box
+            .style("height", "125px") // Increase the height of the select box
             .on("change", filterData);
 
+        // Add an option to display all countries
         countrySelect.append("option")
             .attr("value", "")
             .text("All Countries");
 
-        const countries = Array.from(new Set(validData.map(d => d.country))).sort();
+        // Extract only the country from the location string
+        const countries = Array.from(new Set(validData.map(d => d.country.split(",")[0].trim()))).sort();
+
         countries.forEach(country => {
             countrySelect.append("option")
                 .attr("value", country)
@@ -136,7 +128,7 @@ d3.json("geojson/europe.geojson").then(function (europe) {
                             tooltip.transition()
                                 .duration(200)
                                 .style("opacity", .9);
-                            tooltip.html(`Name: ${d.name}<br/>Location: ${d.city ? d.city + ', ' : ''}${d.country}<br/>Venue: ${d.venue}<br/>Date: ${d.date}`)
+                            tooltip.html(`Name: ${d.name}<br/>Location: ${d.country}<br/>Venue: ${d.venue}<br/>Date: ${d.date}`)
                                 .style("left", (event.pageX + 5) + "px")
                                 .style("top", (event.pageY - 28) + "px");
                         })
@@ -195,7 +187,18 @@ d3.json("geojson/europe.geojson").then(function (europe) {
             .attr("class", "key-item")
             .attr("transform", (d, i) => `translate(0, ${(i + 1) * 25})`)
             .on("click", function (event, d) {
-                yearSelect.property("value", d);
+                const index = selectedYears.indexOf(d);
+                if (index > -1) {
+                    selectedYears.splice(index, 1);
+                    d3.select(this).select("rect")
+                        .attr("stroke", "#000")
+                        .attr("stroke-width", 1);
+                } else {
+                    selectedYears.push(d);
+                    d3.select(this).select("rect")
+                        .attr("stroke", "blue")
+                        .attr("stroke-width", 2);
+                }
                 filterData();
             })
             .style("cursor", "pointer");
@@ -209,10 +212,14 @@ d3.json("geojson/europe.geojson").then(function (europe) {
             .attr("stroke", "#000")
             .attr("stroke-width", 1)
             .on("mouseover", function () {
-                d3.select(this).attr("stroke-width", 2);
+                if (selectedYears.indexOf(d3.select(this.parentNode).datum()) === -1) {
+                    d3.select(this).attr("stroke-width", 2);
+                }
             })
             .on("mouseout", function () {
-                d3.select(this).attr("stroke-width", 1);
+                if (selectedYears.indexOf(d3.select(this.parentNode).datum()) === -1) {
+                    d3.select(this).attr("stroke-width", 1);
+                }
             });
 
         keyItems.append("text")
@@ -231,13 +238,20 @@ d3.json("geojson/europe.geojson").then(function (europe) {
         // Create a reset button
         const resetButton = d3.select("#controls")
             .append("button")
-            .text("Reset")
+            .text("Reset Selection")
             .on("click", resetMap);
 
         function resetMap() {
-            // Reset the select dropdowns
-            yearSelect.property("value", "");
-            countrySelect.property("value", "");
+            // Reset the country select dropdown
+            countrySelect.property("value", [""]);
+
+            // Reset selectedYears array
+            selectedYears = [];
+
+            // Reset the stroke color and width of color key rectangles
+            colorKey.selectAll(".key-item rect")
+                .attr("stroke", "#000")
+                .attr("stroke-width", 1);
 
             // Reset filteredData to all valid data
             filteredData = validData;
