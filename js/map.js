@@ -1,34 +1,33 @@
 const width = window.innerWidth;
 const height = window.innerHeight;
 
-// Create SVG element
+// create map
 const svg = d3.select("#map")
     .append("svg")
     .attr("width", width)
     .attr("height", height);
 
-// Define a projection type
 const projection = d3.geoMercator()
-    .center([20, 50]) // Center on Europe
-    .scale(500) // Initial scale
+    .center([20, 50]) 
+    .scale(500) 
     .translate([width / 2, height / 2]);
 
 const path = d3.geoPath().projection(projection);
 
-// Modify here: Increase the maximum zoom scale
+// zoom scale
 const zoom = d3.zoom()
-    .scaleExtent([1, 20]) // Allow zooming in more closely, max scale was increased from 8 to 20
+    .scaleExtent([1, 20]) 
     .on("zoom", (event) => {
         svg.selectAll("path").attr('transform', event.transform);
         svg.selectAll("circle")
             .attr('transform', event.transform)
-            .attr('r', 5 / event.transform.k) // Adjust the circle radius inversely with zoom
-            .attr('stroke-width', 1 / event.transform.k); // Adjust stroke width inversely with zoom
+            .attr('r', 5 / event.transform.k) 
+            .attr('stroke-width', 1 / event.transform.k); 
     });
 
 svg.call(zoom);
 
-// Create a tooltip div that is hidden by default
+// tooltip div
 const tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("position", "absolute")
@@ -42,14 +41,14 @@ const tooltip = d3.select("body").append("div")
     .style("pointer-events", "none")
     .style("opacity", 0);
 
-// Load and process data
+// load data
 d3.json("geojson/europe.geojson").then(function (europe) {
     d3.csv("/data/updated_data6.csv").then(function (data) {
         data.forEach(d => {
-            const dateYear = d.date.split(",").pop().trim(); // Extract the year from the date string
-            d.year = parseInt(dateYear); // Convert the year to an integer
+            const dateYear = d.date.split(",").pop().trim(); 
+            d.year = parseInt(dateYear); 
             if (d.longitude && d.latitude) {
-                d.jitteredLongitude = +d.longitude + (Math.random() - 0.5) * 0.05; // Jitter positions
+                d.jitteredLongitude = +d.longitude + (Math.random() - 0.5) * 0.05; // jitter
                 d.jitteredLatitude = +d.latitude + (Math.random() - 0.5) * 0.05;
             }
         });
@@ -69,11 +68,11 @@ d3.json("geojson/europe.geojson").then(function (europe) {
             return d3.scaleOrdinal().range(distinctColors);
         }
 
-        // Use the custom distinct color scale
+        // custom colors
         const colorScale = distinctColorScale();
 
-        let filteredData = validData; // Initialize filteredData with all valid data
-        let selectedYears = []; // Initialize selectedYears array
+        let filteredData = validData; 
+        let selectedYears = []; 
 
         function filterData() {
             const selectedCountries = Array.from(countrySelect.property("selectedOptions"), option => option.value);
@@ -91,19 +90,19 @@ d3.json("geojson/europe.geojson").then(function (europe) {
             updateDisplayedCount();
         }
 
-        // Create a multi-select dropdown for country filtering
+        
         const countrySelect = d3.select("#filter-controls").append("select")
             .attr("multiple", true)
-            .style("width", "200px") // Increase the width of the select box
-            .style("height", "125px") // Increase the height of the select box
+            .style("width", "200px") 
+            .style("height", "125px")
             .on("change", filterData);
 
-        // Add an option to display all countries
+        
         countrySelect.append("option")
             .attr("value", "")
             .text("All Countries");
 
-        // Extract only the country from the location string
+        // only country
         const countries = Array.from(new Set(validData.map(d => d.country.split(",")[0].trim()))).sort();
 
         countries.forEach(country => {
@@ -147,7 +146,7 @@ d3.json("geojson/europe.geojson").then(function (europe) {
                 .text(`Displayed Competitions: ${filteredData.length}`);
         }
 
-        // Display count of competitions
+        // count of competition
         svg.append("text")
             .attr("class", "displayed-count")
             .attr("x", 50)
@@ -155,7 +154,7 @@ d3.json("geojson/europe.geojson").then(function (europe) {
             .style("font-size", "16px")
             .text(`Displayed Competitions: ${validData.length}`);
 
-        // Plot the map
+        // plot map
         svg.selectAll("path")
             .data(europe.features)
             .enter()
@@ -165,11 +164,11 @@ d3.json("geojson/europe.geojson").then(function (europe) {
             .attr("stroke", "#333")
             .attr("stroke-width", 0.5);
 
-        // Initial map update
+        
         updateMap();
         updateDisplayedCount();
 
-        // Add color key
+        // color key
         const colorKey = svg.append("g")
             .attr("class", "color-key")
             .attr("transform", `translate(${width - 200}, 20)`);
@@ -227,41 +226,37 @@ d3.json("geojson/europe.geojson").then(function (europe) {
             .attr("y", 15)
             .text(d => d);
 
-        // Calculate the height of the color key
-        const keyHeight = (years.length + 1) * 25; // +1 to account for the "Year" label
+       
+        const keyHeight = (years.length + 1) * 25; 
 
-        // If the key height exceeds the available space, adjust the SVG height
+        
         if (keyHeight > height - 40) {
-            svg.attr("height", keyHeight + 40); // Add some padding for the key
+            svg.attr("height", keyHeight + 40); 
         }
 
-        // Create a reset button
+        // reset button
         const resetButton = d3.select("#controls")
             .append("button")
             .text("Reset Selection")
             .on("click", resetMap);
 
         function resetMap() {
-            // Reset the country select dropdown
             countrySelect.property("value", [""]);
 
-            // Reset selectedYears array
             selectedYears = [];
 
-            // Reset the stroke color and width of color key rectangles
             colorKey.selectAll(".key-item rect")
                 .attr("stroke", "#000")
                 .attr("stroke-width", 1);
 
-            // Reset filteredData to all valid data
             filteredData = validData;
 
-            // Update the map
+
             updateMap();
             updateDisplayedCount();
         }
 
-        // Create a reset zoom button
+        // reset zoom
         const resetZoomButton = d3.select("#zoom-controls")
             .append("button")
             .text("Reset Zoom")
