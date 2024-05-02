@@ -76,7 +76,7 @@ d3.json("geojson/europe.geojson").then(function (europe) {
 
         function filterData() {
             const selectedCountries = Array.from(countrySelect.property("selectedOptions"), option => option.value);
-
+        
             if (selectedYears.length === 0 && (selectedCountries.length === 0 || selectedCountries.includes(""))) {
                 filteredData = validData;
             } else if (selectedYears.length === 0) {
@@ -88,6 +88,7 @@ d3.json("geojson/europe.geojson").then(function (europe) {
             }
             updateMap();
             updateDisplayedCount();
+            resetZoom(); // call reset zoom to fix marker positioning bug
         }
 
         
