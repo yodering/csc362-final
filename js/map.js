@@ -1,17 +1,23 @@
 const width = window.innerWidth;
 const height = window.innerHeight;
 
-// create map
+// create text SVG
+const textSvg = d3.select("#map")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", 30);
+
+// create map SVG
 const svg = d3.select("#map")
     .append("svg")
     .attr("width", width)
-    .attr("height", height)
+    .attr("height", height - 30)
     .attr("alt", "Interactive map of competitions in Europe");
 
 const projection = d3.geoMercator()
-    .center([20, 50]) 
-    .scale(500) 
-    .translate([width / 2, height / 2]);
+    .center([20, 50])
+    .scale(500)
+    .translate([width / 2, (height - 30) / 2]);
 
 const path = d3.geoPath().projection(projection);
 
@@ -145,18 +151,18 @@ d3.json("geojson/europe.geojson").then(function (europe) {
         }
 
         function updateDisplayedCount() {
-            svg.select(".displayed-count")
+            textSvg.select(".displayed-count")
                 .text(`Displayed Competitions: ${filteredData.length}`);
         }
-
+        
         // count of competition
-        svg.append("text")
+        textSvg.append("text")
             .attr("class", "displayed-count")
             .attr("x", 50)
             .attr("y", 20)
             .style("font-size", "16px")
             .text(`Displayed Competitions: ${validData.length}`);
-
+        
         // plot map
         svg.selectAll("path")
             .data(europe.features)
