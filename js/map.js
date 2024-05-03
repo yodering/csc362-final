@@ -5,7 +5,8 @@ const height = window.innerHeight;
 const svg = d3.select("#map")
     .append("svg")
     .attr("width", width)
-    .attr("height", height);
+    .attr("height", height)
+    .attr("alt", "Interactive map of competitions in Europe");
 
 const projection = d3.geoMercator()
     .center([20, 50]) 
@@ -96,6 +97,7 @@ d3.json("geojson/europe.geojson").then(function (europe) {
             .attr("multiple", true)
             .style("width", "200px") 
             .style("height", "125px")
+            .attr("aria-label", "Filter competitions by country")
             .on("change", filterData);
 
         
@@ -172,7 +174,8 @@ d3.json("geojson/europe.geojson").then(function (europe) {
         // color key
         const colorKey = svg.append("g")
             .attr("class", "color-key")
-            .attr("transform", `translate(${width - 200}, 20)`);
+            .attr("transform", `translate(${width - 200}, 20)`)
+            .attr("aria-label", "Color key for competition years");
 
         colorKey.append("text")
             .attr("x", 0)
@@ -239,6 +242,7 @@ d3.json("geojson/europe.geojson").then(function (europe) {
         const resetButton = d3.select("#controls")
             .append("button")
             .text("Reset Selection")
+            .attr("aria-label", "Reset country and year selection")
             .on("click", resetMap);
 
         function resetMap() {
@@ -261,6 +265,7 @@ d3.json("geojson/europe.geojson").then(function (europe) {
         const resetZoomButton = d3.select("#zoom-controls")
             .append("button")
             .text("Reset Zoom")
+            .attr("aria-label", "Reset map zoom level")
             .on("click", resetZoom);
 
         function resetZoom() {
