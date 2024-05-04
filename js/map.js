@@ -99,17 +99,16 @@ d3.json("geojson/europe.geojson").then(function (europe) {
         }
 
         
-        const countrySelect = d3.select("#filter-controls").append("select")
-            .attr("multiple", true)
-            .style("width", "200px") 
-            .style("height", "125px")
-            .attr("aria-label", "Filter competitions by country")
+        const countrySelect = d3.select("#filter-controls").select("select")
             .on("change", filterData);
 
         
         countrySelect.append("option")
             .attr("value", "")
             .text("All Countries");
+
+        const buttonContainer = d3.select("#filter-controls").append("div")
+            .attr("id", "button-container");
 
         // only country
         const countries = Array.from(new Set(validData.map(d => d.country.split(",")[0].trim()))).sort();
@@ -245,11 +244,10 @@ d3.json("geojson/europe.geojson").then(function (europe) {
         }
 
         // reset button
-        const resetButton = d3.select("#controls")
-            .append("button")
-            .text("Reset Selection")
-            .attr("aria-label", "Reset country and year selection")
-            .on("click", resetMap);
+        const resetButton = buttonContainer.append("button")
+        .text("Reset Selection")
+        .attr("aria-label", "Reset country and year selection")
+        .on("click", resetMap);
 
         function resetMap() {
             countrySelect.property("value", [""]);
@@ -268,11 +266,10 @@ d3.json("geojson/europe.geojson").then(function (europe) {
         }
 
         // reset zoom
-        const resetZoomButton = d3.select("#zoom-controls")
-            .append("button")
-            .text("Reset Zoom")
-            .attr("aria-label", "Reset map zoom level")
-            .on("click", resetZoom);
+        const resetZoomButton = buttonContainer.append("button")
+        .text("Reset Zoom")
+        .attr("aria-label", "Reset map zoom level")
+        .on("click", resetZoom);
 
         function resetZoom() {
             svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);

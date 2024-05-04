@@ -4,3 +4,16 @@ html, body {
     padding: 0;
     height: 100%;
 }
+
+#filter-controls {
+    display: flex;
+    align-items: center;
+}
+
+#button-container {
+    margin-left: 10px;
+}
+
+button {
+    margin-right: 5px;
+}
