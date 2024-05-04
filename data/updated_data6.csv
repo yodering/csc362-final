@@ -44,7 +44,7 @@ Unnamed: 0,date,name,country,venue,clean_country,latitude,longitude
 172,"Mar 7 - 8, 2020",Swisscubing Cup II 2020,"Switzerland, Gossau",Andreas-Saal,Switzerland,47.414722,9.2495563
 174,"Mar 7 - 8, 2020",Iruña Open 2020,"Spain, Pamplona, Navarra",Casa de la Juventud,Spain,42.8125,1.6458
 176,"Mar 7, 2020",Don't DNF Dublin 2020,"Ireland, Dublin",Bracken Court Hotel,Ireland,53.6090033,-6.1830254
-177,"Mar 7, 2020",Iceland Open 2020,"Iceland, Reykjavík",Skátaheimili Kópa,Iceland,64.147,21.9408
+177,"Mar 7, 2020",Iceland Open 2020,"Iceland, Reykjavík",Skátaheimili Kópa,Iceland,64.1470,-21.9408
 178,"Mar 7, 2020",Rouen Open 2020,"France, Saint-Etienne-du-Rouvray",INSA de Rouen,France,49.3845826,1.0690977
 184,"Mar 7, 2020",Silesian Spring Świdnica 2020,"Poland, Świdnica","Klub ""Bolko""",Poland,50.8413429,16.4841327
 186,"Mar 6 - 8, 2020",Side 'n Blind Forserum 2020,"Sweden, Forserum",Forserum Församlingshem,Sweden,57.6993278,14.475408
@@ -614,7 +614,7 @@ Unnamed: 0,date,name,country,venue,clean_country,latitude,longitude
 2521,"Apr 15, 2018",SMSO 2018,"Switzerland, Saint-Maurice",Lycée-Collège de l'Abbaye,Switzerland,46.2178172,7.0032229
 2525,"Apr 14 - 15, 2018",High Wycombe Open 2018,"United Kingdom, High Wycombe, Buckinghamshire","Old Town Hall, Wycombe Swan Theatre",United Kingdom,51.6278152,-0.7494023
 2529,"Apr 14 - 15, 2018",Slovenia Nationals 2018,"Slovenia, Maribor",Prometna sola Maribor,Slovenia,46.553556,15.6245884
-2530,"Apr 14 - 15, 2018",Stenay Open 2018,"France, Stenay",MFR (Maison Familiale Rurale),France,46.5547,15.6459
+2530,"Apr 14 - 15, 2018",Stenay Open 2018,"France, Stenay",MFR (Maison Familiale Rurale),France,49.4924,5.1874
 2531,"Apr 14 - 15, 2018",Tietomaa Open 2018,"Finland, Oulu",Tiedekeskus Tietomaa,Finland,65.018394,25.4852598
 2535,"Apr 14, 2018",Milan Saturday 2018,"Italy, Milan","Ludoteca ""La casa dei giochi""",Italy,45.5209969,9.2260883
 2537,"Apr 14, 2018",Albanian Open 2018,"Albania, Tirana",Instituti Harry Fultz,Albania,41.3275,19.8187
@@ -1847,7 +1847,7 @@ Unnamed: 0,date,name,country,venue,clean_country,latitude,longitude
 6729,"Oct 16 - 18, 2009",Hungarian Open 2009,"Hungary, Budapest",Klauzál Gábor Budafok,Hungary,47.4275302,19.0240512
 6730,"Oct 9 - 11, 2009",World Championship 2009,"Germany, Düsseldorf",Burg-Wächter Castello,Germany,51.1755846,6.8646279
 6734,"Sep 26 - 27, 2009",Polish Open 2009,"Poland, Pabianice",Hala Koszykowki,Poland,51.6574,19.3563
-6735,"Sep 26 - 27, 2009",Danish Special 2009,"Denmark, Hillerød",Lille Sverige,Denmark,60.128161,18.643501
+6735,"Sep 26 - 27, 2009",Danish Special 2009,"Denmark, Hillerød",Lille Sverige,Denmark,55.9279,12.3008
 6737,"Sep 19 - 20, 2009",Mantua Open 2009,"Italy, Mantova",Ariston Theatre,Italy,43.8175354,7.7776403
 6740,"Sep 12 - 13, 2009",Brussels Summer Open 2009,"Belgium, Brussels",Campus Ceria,Belgium,50.8154028,4.2948671
 6742,"Sep 12, 2009",Wroclaw Open 2009,"Poland, Wroclaw",Lutheran Parish of Divine Providence,Poland,51.1079,17.0385
