@@ -93,9 +93,11 @@ d3.json("geojson/europe.geojson").then(function (europe) {
             } else {
                 filteredData = validData.filter(d => selectedYears.includes(d.year) && selectedCountries.includes(d.country.split(",")[0].trim()));
             }
+
+            resetZoom(); // call reset zoom to fix marker positioning bug
             updateMap();
             updateDisplayedCount();
-            resetZoom(); // call reset zoom to fix marker positioning bug
+            
         }
 
         
@@ -260,7 +262,7 @@ d3.json("geojson/europe.geojson").then(function (europe) {
 
             filteredData = validData;
 
-
+            resetZoom();
             updateMap();
             updateDisplayedCount();
         }
